@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.ebanievolki.kataplusbot.model.Customer;
 import ru.ebanievolki.kataplusbot.repository.CustomerRepository;
 
@@ -14,9 +16,10 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
+@Component
 @RequiredArgsConstructor
 public class MessageHandler extends ListenerAdapter {
-    CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -26,7 +29,7 @@ public class MessageHandler extends ListenerAdapter {
         onMinusReceived(event);
     }
 
-    private void onMinusReceived(MessageReceivedEvent event) {
+    private void onMinusReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
         if ((event.getChannel() == event.getJDA().getTextChannelsByName("флуд", true).get(0)
                 && message.getContentDisplay().equals("-")
@@ -37,13 +40,13 @@ public class MessageHandler extends ListenerAdapter {
             if (referenceAuthor.isBot()) {
                 event.getTextChannel().sendMessage(plusAuthor.getAsMention() + " Я бот, мне плевать на минусы.").submit();
 
-            } else if (referenceAuthor == plusAuthor) {
+            } else if (referenceAuthor.getIdLong() == plusAuthor.getIdLong()) {
                 event.getTextChannel().sendMessage(plusAuthor.getAsMention() + " Партия не допустит махинаций с плюсами. За вами выехали.").submit();
 
             } else {
 
                 if (!customerRepository.isExist(referenceAuthor.getIdLong())) {
-                    Customer customer = new Customer(referenceAuthor.getName(), -1L, referenceAuthor.getAsTag(), referenceAuthor.getIdLong());
+                    Customer customer = new Customer(referenceAuthor.getIdLong(), referenceAuthor.getName(), -1L, referenceAuthor.getAsTag());
                     customerRepository.addCustomer(customer);
                 } else {
                     Customer customer = customerRepository.getCustomer(referenceAuthor.getIdLong());
@@ -84,7 +87,7 @@ public class MessageHandler extends ListenerAdapter {
         }
     }
 
-    private void onPlusReceived(MessageReceivedEvent event) {
+    private void onPlusReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
         if ((event.getChannel() == event.getJDA().getTextChannelsByName("флуд", true).get(0)
                 && message.getContentDisplay().equals("+")
@@ -94,12 +97,12 @@ public class MessageHandler extends ListenerAdapter {
 
             if (referenceAuthor.isBot()) {
                 event.getTextChannel().sendMessage(plusAuthor.getAsMention() + " Я бот, мы не гонимся за плюсами.").submit();
-            } else if (referenceAuthor == plusAuthor) {
+            } else if (referenceAuthor.getIdLong() == plusAuthor.getIdLong()) {
                 event.getTextChannel().sendMessage(plusAuthor.getAsMention() + " Партия не допустит махинаций с плюсами. За вами выехали.").submit();
 
             } else {
                 if (!customerRepository.isExist(referenceAuthor.getIdLong())) {
-                    Customer customer = new Customer(referenceAuthor.getName(), 1L, referenceAuthor.getAsTag(), referenceAuthor.getIdLong());
+                    Customer customer = new Customer(referenceAuthor.getIdLong(), referenceAuthor.getName(), 1L, referenceAuthor.getAsTag());
                     customerRepository.addCustomer(customer);
                 } else {
                     Customer customer = customerRepository.getCustomer(referenceAuthor.getIdLong());

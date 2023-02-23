@@ -1,18 +1,13 @@
 package ru.ebanievolki.kataplusbot.repository;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import org.springframework.data.repository.CrudRepository;
+import javax.persistence.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ebanievolki.kataplusbot.model.Customer;
+import ru.ebanievolki.kataplusbot.model.PaginationCustomerRq;
+import ru.ebanievolki.kataplusbot.model.PaginationDTO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Transactional
@@ -24,7 +19,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public List<Customer> getStats() {
-        return entityManager.createQuery("from Customer order by plusCount", Customer.class)
+        return entityManager.createQuery("from Customer order by plusCount desc", Customer.class)
                 .setMaxResults(10)
                 .getResultList();
     }
@@ -41,15 +36,28 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean isExist(Long discordId) {
-        String jpql = "from Customer where discordId = :discordId";
-        TypedQuery<Customer> query = entityManager.createQuery(jpql, Customer.class).setParameter("discordId", discordId);
-        return query.getResultList().size() > 0;
+        return !entityManager.createQuery("from Customer where discordId = :discordId", Customer.class)
+                .setParameter("discordId", discordId)
+                .getResultList().isEmpty();
     }
 
     @Override
     public Customer getCustomer(Long discordId) {
-        String jpql = "from Customer where discordId = :discordId";
-        TypedQuery<Customer> query = entityManager.createQuery(jpql, Customer.class).setParameter("discordId", discordId);
-        return query.getSingleResult();
+        return entityManager.createQuery("from Customer where discordId = :discordId", Customer.class)
+                .setParameter("discordId", discordId)
+                .getSingleResult();
+    }
+
+    @Override
+    public PaginationDTO<Customer> getAllWithPaging(PaginationCustomerRq paginationCustomerRq) {
+        return PaginationDTO.builder()
+                .pageableElements(entityManager.createQuery("from Customer")
+                        .setFirstResult(paginationCustomerRq.getPage() * paginationCustomerRq.getSize())
+                        .setMaxResults(paginationCustomerRq.getSize())
+                        .getResultList())
+                .countPages((int) Math.ceil(entityManager.createQuery("select count(id) from Customer", Float.class)
+                        .getSingleResult() / paginationCustomerRq.getSize()))
+                .pageNumber(paginationCustomerRq.getPage())
+                .build();
     }
 }
