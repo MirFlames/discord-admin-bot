@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class KeepAlive {
-    JDA jda;
+    private final JDA jda;
 
     @Scheduled(fixedRate = 600000)
     public void wakeUpBot() {
