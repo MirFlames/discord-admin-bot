@@ -10,7 +10,7 @@ import ru.ebanievolki.kataplusbot.service.CustomerService;
 
 @RestController
 @RequiredArgsConstructor
-public class adminController {
+public class AdminController {
     CustomerService customerService;
 
     public ResponseEntity<PaginationDTO<Customer>> getAllCustomers(PaginationCustomerRq paginationCustomerRq) {
