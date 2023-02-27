@@ -7,10 +7,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class KataplusbotApplication {
+public class KataPlusBotApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KataplusbotApplication.class, args);
+        SpringApplication.run(KataPlusBotApplication.class, args);
     }
 
 }
