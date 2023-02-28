@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ebanievolki.kataplusbot.model.Customer;
 import ru.ebanievolki.kataplusbot.repository.CustomerRepository;
 
@@ -15,7 +17,8 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 
-@Component
+@Service
+@Transactional
 @RequiredArgsConstructor
 public class MessageHandler extends ListenerAdapter {
     private final CustomerRepository customerRepository;
@@ -79,7 +82,7 @@ public class MessageHandler extends ListenerAdapter {
                 }
             }
             try {
-                Thread.sleep(6);
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -94,6 +97,9 @@ public class MessageHandler extends ListenerAdapter {
             User referenceAuthor = message.getMessageReference().getMessage().getAuthor();
             User plusAuthor = message.getAuthor();
 
+            if (referenceAuthor == null) {
+                throw new RuntimeException("referenceAuthor is null");
+            }
             if (referenceAuthor.isBot()) {
                 event.getTextChannel().sendMessage(plusAuthor.getAsMention() + " Я бот, мы не гонимся за плюсами.").submit();
             } else if (referenceAuthor.getIdLong() == plusAuthor.getIdLong()) {
@@ -128,7 +134,7 @@ public class MessageHandler extends ListenerAdapter {
                 }
             }
             try {
-                Thread.sleep(6);
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -152,7 +158,7 @@ public class MessageHandler extends ListenerAdapter {
             }
             event.getChannel().sendMessageEmbeds(embedBuilder.build()).submit();
             try {
-                Thread.sleep(6);
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

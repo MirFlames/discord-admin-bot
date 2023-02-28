@@ -2,7 +2,6 @@ package ru.ebanievolki.kataplusbot.repository;
 
 import javax.persistence.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.ebanievolki.kataplusbot.model.Customer;
 import ru.ebanievolki.kataplusbot.model.PaginationCustomerRq;
 import ru.ebanievolki.kataplusbot.model.PaginationDTO;
@@ -10,7 +9,6 @@ import ru.ebanievolki.kataplusbot.model.PaginationDTO;
 import java.util.List;
 
 
-@Transactional
 @Repository
 public class CustomerRepositoryImpl implements CustomerRepository {
 
@@ -35,16 +33,16 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     }
 
     @Override
-    public boolean isExist(Long discordId) {
-        return !entityManager.createQuery("from Customer where discordId = :discordId", Customer.class)
-                .setParameter("discordId", discordId)
+    public boolean isExist(Long id) {
+        return !entityManager.createQuery("from Customer where id = :id", Customer.class)
+                .setParameter("id", id)
                 .getResultList().isEmpty();
     }
 
     @Override
-    public Customer getCustomer(Long discordId) {
-        return entityManager.createQuery("from Customer where discordId = :discordId", Customer.class)
-                .setParameter("discordId", discordId)
+    public Customer getCustomer(Long id) {
+        return entityManager.createQuery("from Customer where id = :id", Customer.class)
+                .setParameter("id", id)
                 .getSingleResult();
     }
 
