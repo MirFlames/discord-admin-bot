@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.ebanievolki.kataplusbot.model.Customer;
 import ru.ebanievolki.kataplusbot.model.PaginationCustomerRq;
 import ru.ebanievolki.kataplusbot.model.PaginationDTO;
-import ru.ebanievolki.kataplusbot.service.CustomerService;
+import ru.ebanievolki.kataplusbot.service.abstracts.CustomerService;
 
 @RestController
 @RequiredArgsConstructor

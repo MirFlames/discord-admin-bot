@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.ebanievolki.kataplusbot.Handlers.SuccessLoginHandler;
-import ru.ebanievolki.kataplusbot.service.UserService;
+import ru.ebanievolki.kataplusbot.service.abstracts.UserService;
 
 @Configuration
 @EnableWebSecurity
