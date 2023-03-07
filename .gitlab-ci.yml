@@ -12,7 +12,7 @@ build:
     - mvn clean install -Dspring.profiles.active=prod
   artifacts:
     paths:
-      - bot/*.jar
+      - /home/gitlab-runner/*.jar
 
 deploy:
   stage: deploy
@@ -27,7 +27,6 @@ deploy:
 #      - ssh-keyscan $HOST >> ~/.ssh/known_hosts
 #      - chmod 644 ~/.ssh/known_hosts
   script:
-    - cd bot
     - kill $(cat ./pid.file)
     - java -jar -Djda.token=$TOKEN -Dspring.profiles.active=prod kataplusbot-0.0.1-SNAPSHOT.jar & echo $! > ./pid.file &
 #      - ssh -tt $USER@$HOST "sudo rm -rf bot && mkdir bot"
