@@ -14,7 +14,8 @@ public class KeepAlive {
 
     @Scheduled(fixedRate = 600000)
     public void wakeUpBot() {
-        jda.getTextChannels();
-        log.info("Бот по прежнему жив");
+        log.info("Бот активен в каналах:");
+        jda.getTextChannels().forEach(channel -> log.info(channel.getName()));
+        jda.updateCommands().addCommands();
     }
 }
