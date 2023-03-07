@@ -19,5 +19,5 @@ deploy:
   only:
     - master
   script:
-    - kill -9 -e $(pgrep java)
+    - ps aux | pgrep java | xargs kill
     - java -jar -Djda.token=$TOKEN -Dspring.profiles.active=prod kataplusbot-0.0.1-SNAPSHOT.jar & echo $! > ./pid.file &
