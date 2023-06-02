@@ -1,4 +1,4 @@
-package ru.ebanievolki.kataplusbot;
+package admin.tools.discord;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

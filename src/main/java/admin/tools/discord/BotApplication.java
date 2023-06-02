@@ -1,4 +1,4 @@
-package ru.ebanievolki.kataplusbot;
+package admin.tools.discord;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,10 +7,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class KataPlusBotApplication {
+public class BotApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KataPlusBotApplication.class, args);
+        SpringApplication.run(BotApplication.class, args);
     }
 
 }
