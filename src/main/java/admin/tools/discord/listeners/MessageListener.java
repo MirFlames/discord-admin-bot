@@ -11,7 +11,7 @@ public abstract class MessageListener {
                 .filter(message -> message.getAuthor().map(user -> !user.isBot()).orElse(false))
                 .filter(message -> message.getContent().equalsIgnoreCase("!todo"))
                 .flatMap(Message::getChannel)
-                .flatMap(channel -> channel.createMessage("Things to do today:\n - write a bot\n - eat lunch\n - play a game"))
+                .flatMap(channel -> channel.createMessage("Things to do today:\n- write a bot\n- eat lunch\n- play a game"))
                 .then();
     }
 }
